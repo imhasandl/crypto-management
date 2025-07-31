@@ -1,0 +1,142 @@
+definitions:
+  handlers.CoinPriceRequest:
+    properties:
+      coin:
+        type: string
+      timestamp:
+        type: integer
+    type: object
+  handlers.CoinRequest:
+    properties:
+      coin:
+        type: string
+    type: object
+info:
+  contact: {}
+paths:
+  /currency/add:
+    post:
+      consumes:
+      - application/json
+      description: Запускает runner для монеты и начинает получать цену
+      parameters:
+      - description: CoinGecko ID монеты
+        in: body
+        name: coin
+        required: true
+        schema:
+          $ref: '#/definitions/handlers.CoinRequest'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "400":
+          description: Bad Request
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "409":
+          description: Conflict
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      summary: Добавить монету для отслеживания
+      tags:
+      - currency
+  /currency/price:
+    post:
+      consumes:
+      - application/json
+      description: Возвращает цену монеты, ближайшую к указанному времени
+      parameters:
+      - description: CoinGecko ID монеты и timestamp
+        in: body
+        name: coin
+        required: true
+        schema:
+          $ref: '#/definitions/handlers.CoinPriceRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            additionalProperties: true
+            type: object
+        "400":
+          description: Bad Request
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "404":
+          description: Not Found
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      summary: Получить цену монеты на определённое время
+      tags:
+      - currency
+  /currency/remove:
+    post:
+      consumes:
+      - application/json
+      description: Останавливает runner для монеты
+      parameters:
+      - description: CoinGecko ID монеты
+        in: body
+        name: coin
+        required: true
+        schema:
+          $ref: '#/definitions/handlers.CoinRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "400":
+          description: Bad Request
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "409":
+          description: Conflict
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      summary: Удалить монету из отслеживания
+      tags:
+      - currency
+swagger: "2.0"

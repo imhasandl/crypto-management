@@ -1,0 +1,6 @@
+CREATE TABLE coins (
+   id UUID PRIMARY KEY,
+   coin VARCHAR(16) NOT NULL,
+   price INTEGER NOT NULL,
+   timestamp TIMESTAMP NOT NULL
+);
